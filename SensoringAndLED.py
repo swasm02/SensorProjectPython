@@ -65,9 +65,9 @@ setup(1)
 while True:
         try:
                 temphum()
-                airqual(1700)
+                airqual(2000)
                 time.sleep(5)
-                airqual(1700)
+                airqual(2000)
                 time.sleep(5)
 
                 
