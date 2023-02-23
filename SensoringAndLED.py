@@ -4,6 +4,7 @@ import adafruit_dht
 import RPi.GPIO as GPIO
 import ccs811LIBRARY
 import sys
+from datetime import datetime
 
 dhtDevice = adafruit_dht.DHT11(board.D23)
 GPIO.setmode(GPIO.BCM)
@@ -49,15 +50,15 @@ def airqual(border = 1800):
         elif sensor.check_for_error():
                 sensor.print_error()
 
-
-        if sensor.CO2 < border:
-                GPIO.output(LED_ROT,GPIO.LOW) 
-                GPIO.output(LED_GRUEN,GPIO.HIGH) 
-                GPIO.output(LED_BLAU,GPIO.LOW) 
-        else:
-                GPIO.output(LED_ROT,GPIO.HIGH) 
-                GPIO.output(LED_GRUEN,GPIO.LOW) 
-                GPIO.output(LED_BLAU,GPIO.LOW) 
+        if (23 < datetime.now() < 6):
+                if sensor.CO2 < border:
+                        GPIO.output(LED_ROT,GPIO.LOW) 
+                        GPIO.output(LED_GRUEN,GPIO.HIGH) 
+                        GPIO.output(LED_BLAU,GPIO.LOW) 
+                else:
+                        GPIO.output(LED_ROT,GPIO.HIGH) 
+                        GPIO.output(LED_GRUEN,GPIO.LOW) 
+                        GPIO.output(LED_BLAU,GPIO.LOW) 
 
 setup(1)
 
