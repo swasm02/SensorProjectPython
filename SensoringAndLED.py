@@ -60,21 +60,24 @@ def airqual(border = 1800):
 #save data in JSON file (add an entry every 5 seconds)
 #store in same folder as python file
 def save_data(eCO2, TVOC, temperature_c, humidity):
+        #sampling time
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
-        data = {}
-        data['data'] = []
-        data['data'].append({
+        
+        #data to be saved
+        data = {
                 'time': current_time,
                 'eCO2': eCO2,
                 'TVOC': TVOC,
-                'temperature_c': temperature_c,
+                'temperature': temperature_c,
                 'humidity': humidity
-        })
-        with open('data.json', 'a') as outfile:
-                json.dump(data, outfile)
-                outfile.write('\n')
-        print("Data saved in data.json")
+        }
+        #serializing JSON
+        json_object = json.dumps(data, indent = 4)       
+        
+        #writing to JSON file
+        with open('data.json', 'w') as outfile:
+                outfile.write(json_object)
         
 
 setup(1)
