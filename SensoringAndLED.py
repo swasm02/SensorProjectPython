@@ -71,13 +71,11 @@ def save_data(eCO2, TVOC, temperature_c, humidity):
                 'TVOC': TVOC,
                 'temperature': temperature_c,
                 'humidity': humidity
-        }
-        #serializing JSON
-        json_object = json.dumps(data, indent = 4)       
+        }   
         
         #writing to JSON file
-        with open('data.json', 'w') as outfile:
-                outfile.write(json_object)
+        with open('data.json', 'w', encoding='utf8') as outfile:
+                json.dump(data, outfile, ensure_ascii=False, indent=4)
         
 
 setup(1)
