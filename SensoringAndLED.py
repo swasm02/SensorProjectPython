@@ -1,9 +1,7 @@
-import time
-import board
+import time, sys, board, subprocess, json
 import adafruit_dht
 import RPi.GPIO as GPIO
 import ccs811LIBRARY
-import sys
 from datetime import datetime
 
 dhtDevice = adafruit_dht.DHT11(board.D23)
@@ -58,8 +56,31 @@ def airqual(border = 1800):
                 GPIO.output(LED_ROT,GPIO.HIGH) 
                 GPIO.output(LED_GRUEN,GPIO.LOW) 
                 GPIO.output(LED_BLAU,GPIO.LOW) 
+             
+#save data in JSON file (add an entry every 5 seconds)
+#store in same folder as python file
+def save_data(eCO2, TVOC, temperature_c, humidity):
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        data = {}
+        data['data'] = []
+        data['data'].append({
+                'time': current_time,
+                'eCO2': eCO2,
+                'TVOC': TVOC,
+                'temperature_c': temperature_c,
+                'humidity': humidity
+        })
+        with open('data.json', 'a') as outfile:
+                json.dump(data, outfile)
+                outfile.write('\n')
+        print("Data saved in data.json")
+        
 
 setup(1)
+
+# Starten von Prozess pigpiod, um die PWM-Funktion nutzen zu können (mit Sudorechten)
+subprocess.Popen(['sudo', 'pigpiod'])
 
 
 while True:
@@ -69,7 +90,9 @@ while True:
                 time.sleep(5)
                 airqual(2000)
                 time.sleep(5)
-
+                
+                #save data in JSON file
+                save_data(sensor.CO2, sensor.tVOC, dhtDevice.temperature, dhtDevice.humidity)
                 
 
         
