@@ -78,7 +78,7 @@ def save_data(eCO2, TVOC, temperature_c, humidity):
             old_data = json.load(json_file)
                 
         #adding new data to old data -> update
-        old_data.append(a_data)
+        old_data.append(data)
         
         #writing to JSON file
         with open('data.json', 'w', encoding='utf8') as outfile:
