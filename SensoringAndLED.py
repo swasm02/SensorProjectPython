@@ -69,24 +69,19 @@ def save_data(eCO2, TVOC, temperature_c, humidity):
                 'time': current_time,
                 'eCO2': eCO2,
                 'TVOC': TVOC,
-                'temperature': temperature_c,
-                'humidity': humidity
+                'temp': temperature_c,
+                'humid': humidity
         }   
         
-        #saving old data:
-        try:
-                with open('data.json') as json_file:
-                        old_data = json.load(json_file)
-        except FileNotFoundError:
-                old_data = {}
+       #saving old data:
+        with open('data.json') as json_file:
+            old_data = json.load(json_file)
                 
         #adding new data to old data -> update
-        old_data.update(data)
-        
+        old_data.append(a_data)
         
         #writing to JSON file
         with open('data.json', 'w', encoding='utf8') as outfile:
-                #json.dump(data, outfile, ensure_ascii=False, indent=4)
                 json.dump(old_data, outfile, ensure_ascii=False, indent=4)
         
 
